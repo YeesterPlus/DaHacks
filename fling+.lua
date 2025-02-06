@@ -12,7 +12,7 @@ notif.Enabled = false
 local enabled = false
 local uis = game:GetService("UserInputService")
 uis.InputEnded:Connect(function(input, gpe) 
-	if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode ==( FlingKey or Enum.KeyCode.Y )then 
+	if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then 
 		notif.Enabled = not enabled
 		enabled = not enabled
 	end
