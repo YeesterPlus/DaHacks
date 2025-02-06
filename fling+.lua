@@ -1,20 +1,35 @@
-local Desync = Instance.new("Tool")
-Desync.Name = "Fling"
-Desync.Parent = game.Players.LocalPlayer:WaitForChild("Backpack")
+local notif = Instance.new("ScreenGui")
+local label = Instance.new("TextLabel")
+label.Size= UDim2.fromScale(1,1)
+notif.ScreenInsets = Enum.ScreenInsets.TopbarSafeInsets
+label.BackgroundTransparency = 1
+label.TextStrokeTransparency = 0
+label.TextColor3 = Color3.new(1,1,1)
+label.TextStrokeColor3=Color3.new(0,0,0)
+label.Text = "Fling+ enabled"
+notif.Parent = game:GetService("CoreGui")
+notif.Enabled = false
+local enabled = false
+local uis = game:GetService("UserInputService")
+uis.InputEnded:Connect(function(input: InputObject, gameProcessedEvent: boolean) 
+	if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == FlingKey or Enum.KeyCode.Y then 
+		notif.Enabled = not enabled
+		enabled = not enabled
+	end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+	if enabled then
+		game.Workspace.CurrentCamera.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+	end
+end)
 local c
 function init()
-	if Desync:FindFirstAncestorWhichIsA("DataModel")==nil then
-		Desync = Instance.new("Tool")
-		Desync.Name = "Fling"
-		Desync.Parent = game.Players.LocalPlayer.Backpack
-	end
-	game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
 	if c ~= nil then return end
 	c=game.Players.LocalPlayer:GetMouse().Button1Up:Connect(function()
 		c:Disconnect()
 		c=nil
 		local self = game.Players.LocalPlayer.Character
-		if Desync.Parent ~= self then init() return end
+		if not enabled then init() return end
 		local humanoid = self:WaitForChild("Humanoid")
 		game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Fixed
 		print(game.Players.LocalPlayer:GetMouse().Target)
