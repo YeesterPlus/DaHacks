@@ -32,6 +32,7 @@ function init()
 			local d = wait()
 			local x = self:WaitForChild("HumanoidRootPart").Position.X
 			local y = self:WaitForChild("HumanoidRootPart").Position.Z
+			
 			self:WaitForChild("HumanoidRootPart").AssemblyLinearVelocity = (part.Position-self:WaitForChild("HumanoidRootPart").Position)/d
 			self:WaitForChild("HumanoidRootPart").AssemblyAngularVelocity = Vector3.one*9999999
 			for _,i in ipairs(self:GetDescendants()) do
