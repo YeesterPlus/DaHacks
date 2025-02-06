@@ -9,13 +9,14 @@ label.TextStrokeColor3=Color3.new(0,0,0)
 label.Text = "Fling+ enabled"
 label.TextYAlignment = Enum.TextYAlignment.Top
 notif.Parent = game.CoreGui
-notif.Enabled = false
+label.Parent = notif
+label.Visible = false
 local enabled = false
 local uis = game:GetService("UserInputService")
 uis.InputBegan:Connect(function(input, gpe) 
-	if (input.UserInputType == Enum.UserInputType.Keyboard) and (input.KeyCode == Enum.KeyCode.Y) then 
+	if (input.KeyCode == Enum.KeyCode.Y) then 
 		enabled = not enabled
-		notif.Enabled = enabled
+		label.Visible = enabled
 	end
 end)
 local c
