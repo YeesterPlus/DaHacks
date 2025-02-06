@@ -1,0 +1,65 @@
+local Desync = Instance.new("Tool")
+Desync.Name = "Fling"
+Desync.Parent = game.Players.LocalPlayer:WaitForChild("Backpack")
+local c
+function init()
+	if Desync:FindFirstAncestorWhichIsA("DataModel")==nil then
+		Desync = Instance.new("Tool")
+		Desync.Name = "Fling"
+		Desync.Parent = game.Players.LocalPlayer.Backpack
+	end
+	game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+	if c ~= nil then return end
+	c=game.Players.LocalPlayer:GetMouse().Button1Up:Connect(function()
+		c:Disconnect()
+		c=nil
+		local self = game.Players.LocalPlayer.Character
+		if Desync.Parent ~= self then init() return end
+		local humanoid = self:WaitForChild("Humanoid")
+		game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Fixed
+		print(game.Players.LocalPlayer:GetMouse().Target)
+		local part = nil
+		part = game.Players.LocalPlayer:GetMouse().Target
+		if part==nil then init() return end
+		if part:IsGrounded() then init() return end
+		if not (part.CanCollide or part.Parent:FindFirstChildOfClass("Humanoid") ~= nil) then init() return end
+		local oldCF = self:WaitForChild("HumanoidRootPart").CFrame
+		local out = Instance.new("SelectionBox",part)
+		out.Adornee = part
+		out.Color3 = Color3.new(1,0,0)
+		humanoid.EvaluateStateMachine = false
+		while part:FindFirstAncestorWhichIsA("DataModel")~=nil and self:WaitForChild("HumanoidRootPart").Position.Magnitude <= 4000 do
+			local d = wait()
+			local x = self:WaitForChild("HumanoidRootPart").Position.X
+			local y = self:WaitForChild("HumanoidRootPart").Position.Z
+			_=(self.LowerTorso::Part).AssemblyLinearVelocity
+			self:WaitForChild("HumanoidRootPart").AssemblyLinearVelocity = (part.Position-self:WaitForChild("HumanoidRootPart").Position)/d
+			self:WaitForChild("HumanoidRootPart").AssemblyAngularVelocity = Vector3.one*9999999
+			for _,i in ipairs(self:GetDescendants()) do
+				if i:IsA("BasePart") then
+					i.CanCollide = math.random(1,1000)==1
+				end
+			end
+		end
+		self:WaitForChild("HumanoidRootPart").AssemblyLinearVelocity = Vector3.zero
+		self:WaitForChild("HumanoidRootPart").AssemblyAngularVelocity = Vector3.zero
+		self:WaitForChild("HumanoidRootPart").CFrame=oldCF
+		for _,i in ipairs(self:GetDescendants()) do
+			if i:IsA("BasePart") then
+				i.CanCollide = true
+			end
+		end
+		humanoid.EvaluateStateMachine = true
+		init()
+	end)
+end
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+	init()
+	local self = game.Players.LocalPlayer.Character
+	while true do
+		local d = wait()
+		if self:WaitForChild("HumanoidRootPart").Position.Magnitude > 5000 then for _=1,30 do d = wait()
+				self:WaitForChild("HumanoidRootPart").AssemblyLinearVelocity = (Vector3.zero-self:WaitForChild("HumanoidRootPart").Position)/d
+		end end
+	end
+end)
