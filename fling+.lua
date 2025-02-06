@@ -12,15 +12,10 @@ notif.Parent = game.CoreGui
 notif.Enabled = false
 local enabled = false
 local uis = game:GetService("UserInputService")
-uis.InputEnded:Connect(function(input, gpe) 
-	if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then 
+uis.InputBegan:Connect(function(input, gpe) 
+	if (input.UserInputType == Enum.UserInputType.Keyboard) and (input.KeyCode == Enum.KeyCode.Y) then 
 		enabled = not enabled
 		notif.Enabled = enabled
-	end
-end)
-game:GetService("RunService").RenderStepped:Connect(function()
-	if enabled then
-		game.Workspace.CurrentCamera.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 	end
 end)
 local c
