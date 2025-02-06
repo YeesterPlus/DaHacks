@@ -1,12 +1,13 @@
 local notif = Instance.new("ScreenGui")
 local label = Instance.new("TextLabel")
 label.Size= UDim2.fromScale(1,1)
-notif.ScreenInsets = Enum.ScreenInsets.TopbarSafeInsets
+notif.IgnoreGuiInset = true
 label.BackgroundTransparency = 1
 label.TextStrokeTransparency = 0
 label.TextColor3 = Color3.new(1,1,1)
 label.TextStrokeColor3=Color3.new(0,0,0)
 label.Text = "Fling+ enabled"
+label.TextYAlignment = Enum.VerticalAlignment.Top
 notif.Parent = game:GetService("CoreGui")
 notif.Enabled = false
 local enabled = false
@@ -47,7 +48,7 @@ function init()
 			local d = wait()
 			local x = self:WaitForChild("HumanoidRootPart").Position.X
 			local y = self:WaitForChild("HumanoidRootPart").Position.Z
-			
+
 			self:WaitForChild("HumanoidRootPart").AssemblyLinearVelocity = (part.Position-self:WaitForChild("HumanoidRootPart").Position)/d
 			self:WaitForChild("HumanoidRootPart").AssemblyAngularVelocity = Vector3.one*9999999
 			for _,i in ipairs(self:GetDescendants()) do
@@ -75,6 +76,6 @@ game.Players.LocalPlayer.CharacterAdded:Connect(function()
 		local d = wait()
 		if self:WaitForChild("HumanoidRootPart").Position.Magnitude > 5000 then for _=1,30 do d = wait()
 				self:WaitForChild("HumanoidRootPart").AssemblyLinearVelocity = (Vector3.zero-self:WaitForChild("HumanoidRootPart").Position)/d
-		end end
+			end end
 	end
 end)
